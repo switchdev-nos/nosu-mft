@@ -1,0 +1,10 @@
+version: '2'
+services:
+  nosu-mft:
+    build: ./
+    image: nosu-mft
+    privileged: true
+    volumes:
+      - ".:/mnt"
+    working_dir: /mnt
+    command: [ "/mnt/build.sh", "env/default" ]
