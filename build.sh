@@ -70,6 +70,7 @@ Homepage: http://www.mellanox.com
 
 Package: kernel-mft-dkms
 Architecture: amd64
+Depends: linux-image-$KERNEL_VERSION (>= $KERNEL_VERSION)
 Description: DKMS support for kernel-mft kernel modules
  This package provides integration with the DKMS infrastructure for
   automatically building out of tree kernel modules.
@@ -86,7 +87,7 @@ EOF
 chmod +x "$MFT_DEB_DIR"/debian/rules
 
 cat <<EOF > "$MFT_DEB_DIR"/debian/changelog
-kernel-mft-dkms ($MFT_VERSION-nosu) unstable; urgency=medium
+kernel-mft-dkms ($MFT_VERSION-k$KERNEL_VERSION) unstable; urgency=medium
 
   * debian: update kernel abi to $KERNEL_VERSION
 
