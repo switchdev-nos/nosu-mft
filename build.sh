@@ -29,10 +29,12 @@ fi
 [ -n "$MFT_VERSION" ] || fail "MFT_VERSION is not set"
 [ -n "$MFT_SNAPSHOT" ] || fail "MFT_SNAPSHOT is not set"
 
+KERNEL_FULLVER=$KERNEL_VERSION
+[ ! -z "$KERNEL_LOCALVER" ] && KERNEL_FULLVER="$KERNEL_VERSION-$KERNEL_LOCALVER"
 MFTDIR="$BUILDDIR/mft-$MFT_VERSION-x86_64-deb"
-MFT_DKMS_PATH="/lib/modules/$KERNEL_VERSION/updates/dkms"
+MFT_DKMS_PATH="/lib/modules/$KERNEL_FULLVER/updates/dkms"
 MFT_DEB_DIR="$BUILDDIR/kernel-mft-dkms"
-MFT_KMOD_PATH="lib/modules/$KERNEL_VERSION/extra/mft"
+MFT_KMOD_PATH="lib/modules/$KERNEL_FULLVER/extra/mft"
 
 
 if [ "$CLEAN" = true ] && [ -d "$BUILDDIR" ]; then
@@ -50,9 +52,9 @@ fi
 echo "== Installing kernel headers: $KERNEL_HEADERS"
 dpkg -i "$KERNEL_HEADERS"
 
-echo "== Building MFT kernel modules for kernel $KERNEL_VERSION"
+echo "== Building MFT kernel modules for kernel $KERNEL_FULLVER"
 dpkg -i "$MFTDIR"/SDEBS/*.deb
-dkms autoinstall -k "$KERNEL_VERSION" --force
+dkms autoinstall -k "$KERNEL_FULLVER" --force
 [[ $? == 0 ]] || fail "MFT DKMS modules build failed"
 
 mkdir -p "$MFT_DEB_DIR"/debian
@@ -70,7 +72,7 @@ Homepage: http://www.mellanox.com
 
 Package: kernel-mft-dkms
 Architecture: amd64
-Depends: linux-image-$KERNEL_VERSION (>= $KERNEL_VERSION)
+Depends: linux-image-$KERNEL_FULLVER (>= $KERNEL_FULLVER)
 Description: DKMS support for kernel-mft kernel modules
  This package provides integration with the DKMS infrastructure for
   automatically building out of tree kernel modules.
@@ -87,9 +89,9 @@ EOF
 chmod +x "$MFT_DEB_DIR"/debian/rules
 
 cat <<EOF > "$MFT_DEB_DIR"/debian/changelog
-kernel-mft-dkms ($MFT_VERSION-k$KERNEL_VERSION) unstable; urgency=medium
+kernel-mft-dkms ($MFT_VERSION-k$KERNEL_FULLVER) unstable; urgency=medium
 
-  * debian: update kernel abi to $KERNEL_VERSION
+  * debian: update kernel abi to $KERNEL_FULLVER
 
  -- $DEBFULLNAME <$DEBEMAIL>  $(date -R)
 EOF
@@ -104,7 +106,7 @@ cd "$MFT_DEB_DIR"
 dpkg-buildpackage -us -uc -B
 [[ $? == 0 ]] ||  fail "MFT DEB package build failed"
 
-echo "== NEW kernel-mft-dkms package for kernel $KERNEL_VERSION was successfully built!"
+echo "== NEW kernel-mft-dkms package for kernel $KERNEL_FULLVER was successfully built!"
 
 cd "$ROOTDIR"
 mkdir -p "$DEBSDIR"
