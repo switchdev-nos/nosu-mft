@@ -45,7 +45,7 @@ fi
 if [ -n "$MFT_SNAPSHOT" ] && [ ! -d "$BUILDDIR/$MFTDIR" ]; then
   mkdir -p "$BUILDDIR"
   echo "== Downloading MFT snapshot: $MFT_SNAPSHOT"
-  curl "$MFT_SNAPSHOT" | tar -xz -C "$BUILDDIR"
+  curl -L "$MFT_SNAPSHOT" | tar -xz -C "$BUILDDIR"
   [[ $? == 0 ]] || fail "MFT snapshot downloading failed"
 fi
 
