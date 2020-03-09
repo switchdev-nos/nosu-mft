@@ -25,12 +25,12 @@ if [ -n "$1" ]; then
 fi
 
 [ -n "$KERNEL_VERSION" ] || fail "KERNEL_VERSION is not set"
-[ -n "$KERNEL_HEADERS" ] || fail "KERNEL_HEADERS is not set"
 [ -n "$MFT_VERSION" ] || fail "MFT_VERSION is not set"
 [ -n "$MFT_SNAPSHOT" ] || fail "MFT_SNAPSHOT is not set"
 
 KERNEL_FULLVER=$KERNEL_VERSION
 [ ! -z "$KERNEL_LOCALVER" ] && KERNEL_FULLVER="$KERNEL_VERSION-$KERNEL_LOCALVER"
+KERNEL_HEADERS="./kernel/linux-headers-$KERNEL_FULLVER*.deb"
 MFTDIR="$BUILDDIR/mft-$MFT_VERSION-x86_64-deb"
 MFT_DKMS_PATH="/lib/modules/$KERNEL_FULLVER/updates/dkms"
 MFT_DEB_DIR="$BUILDDIR/kernel-mft-dkms"
@@ -50,7 +50,7 @@ if [ -n "$MFT_SNAPSHOT" ] && [ ! -d "$BUILDDIR/$MFTDIR" ]; then
 fi
 
 echo "== Installing kernel headers: $KERNEL_HEADERS"
-dpkg -i "$KERNEL_HEADERS"
+dpkg -i $KERNEL_HEADERS
 
 echo "== Building MFT kernel modules for kernel $KERNEL_FULLVER"
 dpkg -i "$MFTDIR"/SDEBS/*.deb

@@ -1,8 +1,8 @@
 CLEAN=true
 DEBFULLNAME="Alexander Petrovskiy"
 DEBEMAIL="alexpe@mellanox.com"
-MFT_VERSION="4.13.3-6"
-MFT_SNAPSHOT="http://www.mellanox.com/downloads/MFT/mft-4.13.3-6-x86_64-deb.tgz"
+
+MFT_VERSION="4.14.0-105"
+MFT_SNAPSHOT="https://www.mellanox.com/downloads/MFT/mft-4.14.0-105-x86_64-deb.tgz"
 KERNEL_VERSION="5.6.0-rc3"
-KERNEL_LOCALVER="mlnx"
-KERNEL_HEADERS="kernel/linux-headers-5.6.0-rc3-mlnx_5.6.0-rc3-mlnx-1_amd64.deb"
+KERNEL_LOCALVER="8021qaz-4"
